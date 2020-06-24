@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import SearchBox from './SearchBox';
 import CardList from './CardList';
-import { robots } from './robots';
 import './App.css';
 
 class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			robots: robots,
+			robots: [],
 			searchfield: ''
 		}
-	}
-
-	onSearchChange = event => {
-		this.setState({ searchfield: event.target.value});
 	}
 
 	render() {
@@ -28,6 +23,20 @@ class App extends Component {
 			    <CardList robots={filteredRobots} />
 		  	</div>
 		);
+	}
+
+	componentDidMount() {
+		fetch('https://jsonplaceholder.typicode.com/users')
+		.then( response => {
+			return response.json();
+		})
+		.then( users => {
+			this.setState({ robots: users })
+		});
+	}
+
+	onSearchChange = event => {
+		this.setState({ searchfield: event.target.value});
 	}
 }
 
